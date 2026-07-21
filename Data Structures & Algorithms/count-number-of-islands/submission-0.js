@@ -1,0 +1,35 @@
+class Solution {
+    /**
+     * @param {character[][]} grid
+     * @return {number}
+     */
+    numIslands(grid) {
+        let res=0;
+        const getNeighbors = (i,j) => {
+            return [
+                ...(i>0 ? [[i-1, j]] : []),
+                ...(j<grid[0].length-1 ? [[i, j+1]] : []),
+                ...(i<grid.length-1 ? [[i+1, j]] : []),
+                ...(j>0 ? [[i, j-1]] : [])
+            ]
+        }
+        const dfs = (i, j) => {
+            const neighbors = getNeighbors(i,j);
+            const neighborLand = neighbors.filter(p => grid[p[0]][p[1]]==="1");
+            grid[i][j]="2";
+            for (const land of neighborLand) {
+                dfs(land[0], land[1]);
+            }
+
+        }
+        for (let i=0; i<grid.length; i++) {
+            for (let j=0; j<grid[0].length; j++) {
+                if (grid[i][j] === "1") {
+                    res++;
+                    dfs(i, j);
+                }
+            }
+        }
+        return res;
+    }
+}
